@@ -1,11 +1,10 @@
-from random import randint, random
 import socket
 import sys
 import time
 import string
-import random
 
-#getting up and stuff
+
+#getting setting target ip
 if len(sys.argv) == 3:
     ip = sys.argv[1]
     port = int(sys.argv[2])
@@ -16,16 +15,16 @@ else:
 
 
 
-s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM, 0)
-print("Do Ctrl+c to exit the program !!")
 
+
+s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM, 0)
 # sending
 while True:
 
     letters = string.ascii_letters
     #send_data = ''.join(random.choice(letters) for i in range(random.randint(1,100)))
-    send_data = 'test'
+    send_data = 'package'
     time.sleep(.0001)
     s.sendto(send_data.encode('utf-8'), (ip, port))
-    print("\n1. Client Sent : ", send_data)
+    print("Sent data: ", send_data)
 s.close()
