@@ -23,7 +23,6 @@ print("Do Ctrl+c to exit the program !!")
 while True:
 
     letters = string.ascii_letters
-
     #send_data = ''.join(random.choice(letters) for i in range(random.randint(1,100)))
     send_data = 'test'
     time.sleep(.0001)
