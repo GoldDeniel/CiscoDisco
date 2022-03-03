@@ -17,8 +17,16 @@ else:
 
 
 
+def get_speaker_output_volume():
+    volume = 0
+
+
+
+
 s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM, 0)
 # sending
+while True:
+    get_speaker_output_volume()
 while True:
 
     letters = string.ascii_letters
