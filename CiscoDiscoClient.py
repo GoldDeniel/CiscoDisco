@@ -38,7 +38,7 @@ def print_sound(indata, outdata, frames, time_, status):
     outputVolume = int(volume_norm)
     #print(outputVolume)
 
-    for x in range(round(outputVolume * 0.5)):
+    for x in range(round(outputVolume * 0.25)):
         send_packages(outputVolume)
 with sd.Stream(callback=print_sound):
     sd.sleep(100000)
