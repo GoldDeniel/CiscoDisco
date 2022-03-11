@@ -2,22 +2,46 @@ import socket
 from struct import pack
 import sys
 import time
-import string
 import time
-import os
 import sounddevice as sd
 import numpy as np
 
-#getting setting target ip
+# getting setting target ip
+
 if len(sys.argv) == 3:
     ip = sys.argv[1]
     port = int(sys.argv[2])
 else:
-    print("Run like : python3 client.py <arg1 server ip 192.168.1.102> <arg2 server port 4444 >")
-
+    ip = "127.0.0.1"
+    port = 500
 s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM, 0)
-rows, columns = os.popen('stty size', 'r').read().split()
 
+# getting the terminal length in a way that doesn't crash ALSA
+
+def getTerminalSize():
+    import os
+    env = os.environ
+    def ioctl_GWINSZ(fd):
+        try:
+            import fcntl, termios, struct
+            cr = struct.unpack('hh', fcntl.ioctl(fd, termios.TIOCGWINSZ,
+        '1234'))
+        except:
+            return
+        return cr
+    cr = ioctl_GWINSZ(0) or ioctl_GWINSZ(1) or ioctl_GWINSZ(2)
+    if not cr:
+        try:
+            fd = os.open(os.ctermid(), os.O_RDONLY)
+            cr = ioctl_GWINSZ(fd)
+            os.close(fd)
+        except:
+            pass
+    if not cr:
+        cr = (env.get('LINES', 25), env.get('COLUMNS', 80))
+    return int(cr[1]), int(cr[0])
+
+(rows, height) = getTerminalSize() # saving them in variables
 
 def send_packages(deci):
 
@@ -27,6 +51,7 @@ def send_packages(deci):
 
     print(' ' * int(rows))
     print("|" * deci, end="\r")
+
 def print_sound(indata, outdata, frames, time_, status):
     volume_norm = np.linalg.norm(indata)*10
     outputVolume = int(volume_norm)
@@ -34,7 +59,6 @@ def print_sound(indata, outdata, frames, time_, status):
         send_packages(outputVolume)
 
 with sd.Stream(callback=print_sound):
-    os.system('cls' if os.name == 'nt' else 'clear')
     time.sleep(10000)
 
 s.close()
