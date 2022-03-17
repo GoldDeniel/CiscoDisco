@@ -2,6 +2,6 @@ This short script indicates the volume in the terminal, and sends packets to a s
 
 Usage (example):
 
-$ python CiscoDisco.py <ip> <port>
+$ python CiscoDisco.py \<ip\> \<port\>
 
 If you don't give the args, a loopback address will be used.
